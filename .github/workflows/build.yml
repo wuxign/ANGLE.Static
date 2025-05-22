@@ -8,8 +8,8 @@ jobs:
 
       - uses: TheMrMilchmann/setup-msvc-dev@v3
         with:
-          arch: x64
-          
+          arch: x86   # 改成 x86
+
       - name: Prepare DirectX SDK
         working-directory: ${{github.workspace}}
         shell: bash
@@ -18,28 +18,28 @@ jobs:
           git init && git remote add origin https://github.com/hrydgard/minidx9
           git fetch --depth 1 origin master
           git checkout -q FETCH_HEAD
-          cd Lib/x64
+          cd Lib/x86    # 改成 x86
           rm -rf D3DCSXd.lib d3dx9d.lib d3dx10d.lib d3dx11d.lib xapobased.lib
 
       - name: Link DirectX SDK
         working-directory: ${{github.workspace}}
         shell: cmd
-        run: lib /out:dxstatic.lib directx/Lib/x64/*.lib
+        run: lib /out:dxstatic.lib directx/Lib/x86/*.lib   # 这里也改 x86
 
       - name: Build ANGLE
         working-directory: ${{github.workspace}}
         shell: pwsh
-        run: vcpkg install angle:x64-windows-static
+        run: vcpkg install angle:x86-windows-static   # 改成 x86
 
       - name: Export ANGLE
         working-directory: ${{github.workspace}}
         shell: pwsh
-        run: vcpkg export angle:x64-windows-static --raw --output-dir=. --output=angle-x64-windows-static
+        run: vcpkg export angle:x86-windows-static --raw --output-dir=. --output=angle-x86-windows-static  # 改成 x86
 
       - name: Link ANGLE
         working-directory: ${{github.workspace}}
         shell: cmd
-        run: lib /out:libangle.lib angle-x64-windows-static/installed/x64-windows-static/lib/*.lib
+        run: lib /out:libangle.lib angle-x86-windows-static/installed/x86-windows-static/lib/*.lib  # 改成 x86
 
       - name: Link av_libglesv2.lib
         working-directory: ${{github.workspace}}
@@ -50,14 +50,14 @@ jobs:
         working-directory: ${{github.workspace}}
         shell: pwsh
         run: |
-          7z a -y -mx9 angle-x64-windows-static-$env:UCRTVersion.7z ./angle-x64-windows-static/
+          7z a -y -mx9 angle-x86-windows-static-$env:UCRTVersion.7z ./angle-x86-windows-static/
           7z a -y -mx9 av_libglesv2-$env:UCRTVersion.7z ./av_libglesv2.lib
 
       - name: Create MD5
         working-directory: ${{github.workspace}}
         shell: bash
         run: |
-          md5sum angle-x64-windows-static-$UCRTVersion.7z > angle-x64-windows-static-$UCRTVersion.7z.md5
+          md5sum angle-x86-windows-static-$UCRTVersion.7z > angle-x86-windows-static-$UCRTVersion.7z.md5
           md5sum av_libglesv2-$UCRTVersion.7z > av_libglesv2-$UCRTVersion.7z.md5
 
       - name: List dir
@@ -67,13 +67,13 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: angle-x64-windows-static-${{env.UCRTVersion}}.7z
-          path: angle-x64-windows-static-${{env.UCRTVersion}}.7z
+          name: angle-x86-windows-static-${{env.UCRTVersion}}.7z
+          path: angle-x86-windows-static-${{env.UCRTVersion}}.7z
 
       - uses: actions/upload-artifact@v4
         with:
-          name: angle-x64-windows-static-${{env.UCRTVersion}}.7z.md5
-          path: angle-x64-windows-static-${{env.UCRTVersion}}.7z.md5
+          name: angle-x86-windows-static-${{env.UCRTVersion}}.7z.md5
+          path: angle-x86-windows-static-${{env.UCRTVersion}}.7z.md5
 
       - uses: actions/upload-artifact@v4
         with:
@@ -90,7 +90,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            angle-x64-windows-static-${{env.UCRTVersion}}.7z
-            angle-x64-windows-static-${{env.UCRTVersion}}.7z.md5
+            angle-x86-windows-static-${{env.UCRTVersion}}.7z
+            angle-x86-windows-static-${{env.UCRTVersion}}.7z.md5
             av_libglesv2-${{env.UCRTVersion}}.7z
             av_libglesv2-${{env.UCRTVersion}}.7z.md5
