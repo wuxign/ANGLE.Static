@@ -6,6 +6,10 @@ is_component_build = false
 is_clang = false
 is_debug = false
 
+# Disable debugging tools to avoid Windows SDK issues
+symbol_level = 0
+enable_iterator_debugging = false
+
 angle_is_msvc = true
 symbol_level = 0
 use_custom_libcxx = false

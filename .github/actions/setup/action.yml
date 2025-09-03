@@ -14,6 +14,17 @@ runs:
     - name: Setup depot tools
       uses: 2ndlab/actions/setup-depot-tools@main
 
+    - name: Install Windows SDK Debugging Tools
+      shell: pwsh
+      run: |
+        # Try to install debugging tools for Windows SDK
+        $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Debuggers\x86"
+        if (!(Test-Path $sdkPath)) {
+          Write-Host "Creating debugger path and copying system dbghelp.dll"
+          New-Item -ItemType Directory -Path $sdkPath -Force
+          Copy-Item "C:\Windows\SysWOW64\dbghelp.dll" "$sdkPath\dbghelp.dll" -Force
+        }
+
     - name: Setup PATH and ENV
       shell: pwsh
       run: |
