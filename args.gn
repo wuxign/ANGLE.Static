@@ -1,4 +1,5 @@
 # Set build arguments here. See `gn help buildargs`.
+target_cpu = "x86"
 is_official_build = false
 is_component_build = false
 is_clang = false
