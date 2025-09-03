@@ -21,4 +21,4 @@ angle_enable_swiftshader = false
 angle_enable_wgpu = false
 angle_enable_vulkan = false
 
-windows_sdk_version = "10.0.26100.0"
+windows_sdk_version = "10.0.22621.0"
